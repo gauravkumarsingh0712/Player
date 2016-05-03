@@ -10,6 +10,7 @@ import android.os.PowerManager;
 import android.support.annotation.Nullable;
 
 import com.musicplayer.collection.android.activity.MusicPlayerActivity;
+import com.musicplayer.collection.android.fragment.SongsListFragment;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 
 import java.io.IOException;
@@ -107,6 +108,7 @@ public class MusicPlayerService extends Service implements
         if (MusicPlayerActivity.getInstanse().isRepeat) {
             // repeat is on play same song again
             MusicPlayerActivity.getInstanse().playSong(currentSongIndex);
+
         } else if (MusicPlayerActivity.getInstanse().isShuffle) {
             // shuffle is on - play a random song
             Random rand = new Random();
@@ -123,6 +125,8 @@ public class MusicPlayerService extends Service implements
                 currentSongIndex = 0;
             }
         }
+
+        SongsListFragment.pos = currentSongIndex;
        // MusicPlayerActivity.getInstanse().getImageFromDevice(currentSongIndex);
     }
 

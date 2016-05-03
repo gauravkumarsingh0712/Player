@@ -10,16 +10,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.musicplayer.collection.android.R;
-import com.musicplayer.collection.android.adapter.MusicPlayerListViewAdapter;
+import com.musicplayer.collection.android.adapter.SongListViewAdapter;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 import com.musicplayer.collection.android.service.MusicPlayerService;
-
-import es.claucookie.miniequalizerlibrary.EqualizerView;
 
 public class PlayListActivity extends BaseActivity {
     // Songs list
     private ListView listView;
-    private MusicPlayerListViewAdapter playerListViewAdapter;
+    private SongListViewAdapter playerListViewAdapter;
     private TextView songNameTextView;
     private ImageView songImageView;
     private ImageView playPauseImageView;
@@ -28,6 +26,7 @@ public class PlayListActivity extends BaseActivity {
     private SongsInfoDto mSongsInfoDto;
     private int songIndex;
     private MusicPlayerService mMusicPlayerService;
+    public static int pos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +55,13 @@ public class PlayListActivity extends BaseActivity {
     @Override
     public void initData() {
 
-        playerListViewAdapter = new MusicPlayerListViewAdapter(
+        playerListViewAdapter = new SongListViewAdapter(
                 PlayListActivity.this);
         listView.setAdapter(playerListViewAdapter);
         listView.setFastScrollAlwaysVisible(true);
         playerListViewAdapter.notifyDataSetChanged();
 
-        playSongFromList(0);
+        playSongFromList(MusicPlayerService.currentSongIndex);
 
     }
 
@@ -75,12 +74,9 @@ public class PlayListActivity extends BaseActivity {
                                     int position, long id) {
                 // getting listitem index
                 songIndex = position;
-
-                playerListViewAdapter.viewHolder.equalizer = (EqualizerView) view.findViewById(R.id.equalizer_view);
-
-                playerListViewAdapter.viewHolder.equalizer.setVisibility(View.VISIBLE);
-                playerListViewAdapter.viewHolder.equalizer.animateBars();
-
+                pos = songIndex;
+                playerListViewAdapter.notifyDataSetChanged();
+                MusicPlayerActivity.getInstanse().playSong(songIndex);
                 playSongFromList(songIndex);
 
                 MusicPlayerService.currentSongIndex = songIndex;
@@ -97,10 +93,10 @@ public class PlayListActivity extends BaseActivity {
                 in.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 // Sending songIndex to PlayerActivity
                 in.putExtra("songIndex", songIndex);
-                //setResult(100, in);
-                startActivity(in);
+                setResult(100, in);
+               // startActivity(in);
                 // Closing PlayListView
-                // finish();
+                finish();
             }
         });
 
@@ -150,11 +146,30 @@ public class PlayListActivity extends BaseActivity {
 
     public void playSongFromList(int index) {
 
-        MusicPlayerActivity.getInstanse().playSong(index);
+        if (!mMusicPlayerService.isPlayingMood()) {
+            if (mMusicPlayerService.player != null) {
+                MusicPlayerActivity.getInstanse().playSong(index);
+            }
+        }
+
         songNameTextView.setText(mSongsInfoDto.getSongNameArray().get(index));
         songNameTextView.setSelected(true);
         songImageView.setImageBitmap(mSongsInfoDto.getSongImageBitmapArray().get(index));
         playPauseImageView.setImageResource(R.drawable.pause_button);
+
+        if (mMusicPlayerService.isPlayingMood()) {
+            if (mMusicPlayerService.player != null) {
+                // Changing button image to play button
+                playPauseImageView.setImageResource(R.drawable.pause_button);
+            }
+        } else {
+
+            // Resume song
+            if (mMusicPlayerService.player != null) {
+                // Changing button image to pause button
+                playPauseImageView.setImageResource(R.drawable.play_button);
+            }
+        }
 
     }
 

@@ -1,10 +1,13 @@
 package com.musicplayer.collection.android.activity;
 
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -25,7 +28,7 @@ import com.musicplayer.collection.android.utils.Utilities;
 
 import java.io.File;
 
-public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
+public class MusicPlayerActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
 
     private ImageButton btnPlay;
     private ImageButton btnForward;
@@ -47,7 +50,7 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
     ;
     private SongsManager songManager;
     private Utilities utils;
-
+    public static MusicPlayerActivity musicPlayerActivity;
     //public int currentSongIndex = 0;
     public boolean isShuffle = false;
     public boolean isRepeat = false;
@@ -62,6 +65,7 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
 
     public static final String MEDIA_PATH = new String(Environment.getExternalStorageDirectory().getAbsolutePath());
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +105,7 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
 
         // Listeners
         songProgressBar.setOnSeekBarChangeListener(this); // Important
+        songProgressBar.getThumb().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         // mp.setOnCompletionListener(this); // Important
         // Getting all songs list
         // songsList = songManager.getPlayList();
@@ -258,12 +263,13 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
 
             @Override
             public void onClick(View arg0) {
-                Intent i = new Intent(MusicPlayerActivity.this, PlayListActivity.class);
+                Intent i = new Intent(MusicPlayerActivity.this, MainActivity.class);
+                i.putExtra("currentsongIndex", MusicPlayerService.currentSongIndex);
                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(i);
+                //startActivityForResult(i,100);
             }
         });
-
 
 
         songImage.setOnLongClickListener(new View.OnLongClickListener() {
@@ -280,7 +286,21 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
 
     }
 
-    public static MusicPlayerActivity musicPlayerActivity;
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initListener() {
+
+    }
+
 
     public static MusicPlayerActivity getInstanse() {
 
@@ -297,9 +317,20 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 100) {
             MusicPlayerService.currentSongIndex = data.getExtras().getInt("songIndex");
-            // play selected song
-            // getImageFromDevice(musicPlayerService.currentSongIndex);
-           // playSong(musicPlayerService.currentSongIndex);
+
+            if (musicPlayerService.isPlayingMood()) {
+                if (musicPlayerService.player != null) {
+                    // Changing button image to play button
+                    btnPlay.setImageResource(R.drawable.btn_pause);
+                }
+            } else {
+
+                // Resume song
+                if (musicPlayerService.player != null) {
+                    // Changing button image to pause button
+                    btnPlay.setImageResource(R.drawable.btn_play);
+                }
+            }
         }
 
     }
@@ -308,6 +339,7 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         System.out.println("onNewIntent call ");
+
 
         if (musicPlayerService.isPlayingMood()) {
             if (musicPlayerService.player != null) {
@@ -342,11 +374,10 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
             songTitleLabel.setText(songsInfoDto.getSongNameArray().get(songIndex));
             songTitleLabel.setSelected(true);
             // Changing Button Image to pause image
-            if(isPlayingFirstTime) {
+            if (isPlayingFirstTime) {
                 btnPlay.setImageResource(R.drawable.btn_pause);
                 musicPlayerService.goStart();
-            }else
-            {
+            } else {
                 btnPlay.setImageResource(R.drawable.btn_play);
                 isPlayingFirstTime = true;
             }
@@ -437,9 +468,11 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
         super.onDestroy();
         mHandler.removeCallbacks(mUpdateTimeTask);
         unbindService(musicConnection);
-        if(playIntent != null) {
+        if (playIntent != null) {
             stopService(playIntent);
         }
+
+        finish();
 
     }
 
@@ -488,4 +521,14 @@ public class MusicPlayerActivity extends Activity implements SeekBar.OnSeekBarCh
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(MusicPlayerActivity.this,
+                ChoosePlayerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }

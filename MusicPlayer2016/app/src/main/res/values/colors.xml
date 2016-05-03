@@ -12,4 +12,11 @@
     <color name="light_gray_header_color">#646663</color>
     <color name="start_color_progressbar">#910316</color>
     <color name="end_color_progressbar">#FD042A</color>
+    <color name="app_theam_color">#800000</color>
+    <color name="green_color">#228B22</color>
+    <color name="blue_color">#7B68EE</color>
+    <color name="brown_color">#8b4513</color>
+
+
+
 </resources>

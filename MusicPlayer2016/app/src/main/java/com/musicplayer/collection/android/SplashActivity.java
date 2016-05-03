@@ -10,8 +10,8 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.musicplayer.collection.android.activity.ChoosePlayerActivity;
@@ -45,8 +45,8 @@ public class SplashActivity extends Activity {
 
         setContentView(R.layout.splash_activity);
 
-       // progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-       // progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.circle_progress_bar_lower));
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.circle_progress_bar_lower));
 
 
         songsInfoDto = SongsInfoDto.getInstance();
@@ -61,21 +61,22 @@ public class SplashActivity extends Activity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            Intent in = new Intent(SplashActivity.this,
-                                    ChoosePlayerActivity.class);
-                            startActivity(in);
-                            finish();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 3000);
+                progressBar.setVisibility(View.VISIBLE);
+//                Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//
+//                            Intent in = new Intent(SplashActivity.this,
+//                                    ChoosePlayerActivity.class);
+//                            startActivity(in);
+//                            finish();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, 3000);
 
 
             }
@@ -91,7 +92,11 @@ public class SplashActivity extends Activity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-
+                Intent in = new Intent(SplashActivity.this,
+                        ChoosePlayerActivity.class);
+                startActivity(in);
+                progressBar.setVisibility(View.GONE);
+                finish();
             }
 
         };
@@ -150,7 +155,6 @@ public class SplashActivity extends Activity {
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
-
                         String songName = cursor.getString(cursor
                                 .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
 

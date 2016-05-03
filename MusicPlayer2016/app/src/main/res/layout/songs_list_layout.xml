@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/app_theam_color">
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/list_view_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/footer_player">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footer_layout">
 
         <ListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:id="@+id/song_lait_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:divider="#242424"
             android:dividerHeight="1dp"
             android:fastScrollEnabled="true"
@@ -22,12 +22,15 @@
 
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"/>
 
-        <include
-            android:id="@+id/footer_player"
-            android:layout_alignParentBottom="true"
-            layout="@layout/footer_player_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
+
+
 
 </RelativeLayout>

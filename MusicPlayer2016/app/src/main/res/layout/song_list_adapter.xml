@@ -2,35 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="horizontal"
-    android:background="#800000">
+    android:weightSum="10">
 
-    <ImageView
-        android:id="@+id/image_of_songs"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_launcher"
-        android:padding="5dp"/>
 
-    <TextView
-        android:id="@+id/song_name_list"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Song Name"
-        android:textColor="@color/white"
-        android:singleLine="true"
-        android:padding="5dp"/>
+        android:layout_weight="8.5"
+        android:orientation="horizontal">
 
-    <es.claucookie.miniequalizerlibrary.EqualizerView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/equalizer_view"
-        android:padding="10dp"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        custom:foregroundColor="@color/white"
-        custom:animDuration="3500"
-        android:visibility="gone"/>
 
+        <ImageView
+            android:id="@+id/image_of_songs"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/song_name_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:text="Song Name"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="horizontal">
+
+        <es.claucookie.miniequalizerlibrary.EqualizerView xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/equalizer_view"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            custom:animDuration="3500"
+            custom:foregroundColor="@color/Red" />
+    </LinearLayout>
 </LinearLayout>

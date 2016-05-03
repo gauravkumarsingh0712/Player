@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#800000">
+    android:background="@color/brown_color">
 
     <!-- Player Header -->
     <LinearLayout
@@ -47,10 +47,10 @@
                 android:id="@+id/btnPlaylist"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:background="@null"
-                android:src="@drawable/btn_playlist"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:background="@null"
+                android:src="@drawable/btn_playlist" />
         </LinearLayout>
     </LinearLayout>
 
@@ -130,13 +130,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/player_footer_bg"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:progressDrawable="@drawable/progressbar_theam"
-        android:thumb="@drawable/seek_handler" />
+        android:padding="0dp"
+        android:progressDrawable="@drawable/progress_drawable"
+        />
 
     <!-- Timer Display -->
     <LinearLayout
@@ -191,4 +187,5 @@
             android:background="@null"
             android:src="@drawable/btn_shuffle" />
     </LinearLayout>
+
 </RelativeLayout>
