@@ -1,6 +1,9 @@
 package com.musicplayer.collection.android.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -54,6 +57,9 @@ public class MainActivity extends BaseActivity implements SongsListFragment.Song
         initView();
         initListener();
         initData();
+
+        registerReceiver(broadcastReceiver, new IntentFilter(
+                MusicPlayerService.BROADCAST_PLAY_MUSIC));
     }
 
     @Override
@@ -299,5 +305,15 @@ public class MainActivity extends BaseActivity implements SongsListFragment.Song
 
 
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            playSongFromList(MusicPlayerService.currentSongIndex);
+            informationInterface.getData(MusicPlayerService.currentSongIndex);       
+        }
+    };
+
 
 }

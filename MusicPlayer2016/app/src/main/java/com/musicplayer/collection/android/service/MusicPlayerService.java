@@ -38,6 +38,8 @@ public class MusicPlayerService extends Service implements
 
     private int seekForwardTime = 5000; // 5000 milliseconds
     private int seekBackwardTime = 5000; // 5000 milliseconds
+    public static final String BROADCAST_PLAY_MUSIC = "play_music";
+    private Intent playMusicBroadcast;
 
 
     @Override
@@ -49,6 +51,8 @@ public class MusicPlayerService extends Service implements
 
         songsInfoDto = SongsInfoDto.getInstance();
         songsList = songsInfoDto.getSongPathArray();
+
+        playMusicBroadcast = new Intent(BROADCAST_PLAY_MUSIC);
 
         //initialize
         initMusicPlayer();
@@ -127,7 +131,11 @@ public class MusicPlayerService extends Service implements
         }
 
         SongsListFragment.pos = currentSongIndex;
+
+        sendBroadcast(playMusicBroadcast);
        // MusicPlayerActivity.getInstanse().getImageFromDevice(currentSongIndex);
+
+
     }
 
     @Override
