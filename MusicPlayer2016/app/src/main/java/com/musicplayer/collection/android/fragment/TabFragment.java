@@ -14,13 +14,13 @@ import android.view.ViewGroup;
 import com.musicplayer.collection.android.R;
 
 /**
- * Created by Ratan on 7/27/2015.
+ * Created by GAURAV on 7/27/2015.
  */
 public class TabFragment extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 3 ;
+    public static int int_items = 4 ;
 
     @Nullable
     @Override
@@ -71,6 +71,7 @@ public class TabFragment extends Fragment {
               case 0 : return new SongsListFragment();
               case 1 : return new AlbumListFragment();
               case 2 : return new ArtistListFragment();
+              case 3 : return new PlayListFragment();
           }
         return null;
         }
@@ -96,6 +97,8 @@ public class TabFragment extends Fragment {
                     return "Album";
                 case 2 :
                     return "Artist";
+                case 3 :
+                    return "Playlist";
             }
                 return null;
         }

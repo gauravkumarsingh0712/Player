@@ -9,15 +9,32 @@ import java.util.ArrayList;
  */
 public class SongsInfoDto {
 
-
     private ArrayList<String> albumNameArray = new ArrayList<>();
     private ArrayList<String> artistNameArray = new ArrayList<>();
     private ArrayList<String> yearArray = new ArrayList<>();
-    private ArrayList<String> songPathArray = new ArrayList<>();
+    public ArrayList<String> songPathArray = new ArrayList<>();
     private ArrayList<String> songNameArray = new ArrayList<>();
     private ArrayList<Bitmap> songImageBitmapArray = new ArrayList<>();
-
+    private ArrayList<String> addToPlayListArray = new ArrayList<>();
+    private ArrayList<Integer> indexPlayListArray = new ArrayList<>();
     public static SongsInfoDto songsInfoDto;
+    private boolean isStartPlayList = false;
+
+    public boolean isStartPlayList() {
+        return isStartPlayList;
+    }
+
+    public void setIsStartPlayList(boolean isStartPlayList) {
+        this.isStartPlayList = isStartPlayList;
+    }
+
+    public ArrayList<Integer> getIndexPlayListArray() {
+        return indexPlayListArray;
+    }
+
+    public void setIndexPlayListArray(ArrayList<Integer> indexPlayListArray) {
+        this.indexPlayListArray = indexPlayListArray;
+    }
 
     public ArrayList<String> getYearArray() {
         return yearArray;
@@ -45,7 +62,8 @@ public class SongsInfoDto {
 
 
     public static SongsInfoDto getInstance() {
-        if (songsInfoDto == null) {
+        if (songsInfoDto == null)
+        {
             songsInfoDto = new SongsInfoDto();
         }
 
@@ -75,6 +93,14 @@ public class SongsInfoDto {
 
     public void setSongImageBitmapArray(ArrayList<Bitmap> songImageBitmapArray) {
         this.songImageBitmapArray = songImageBitmapArray;
+    }
+
+    public ArrayList<String> getAddToPlayListArray() {
+        return addToPlayListArray;
+    }
+
+    public void setAddToPlayListArray(ArrayList<String> addToPlayListArray) {
+        this.addToPlayListArray = addToPlayListArray;
     }
 
 }

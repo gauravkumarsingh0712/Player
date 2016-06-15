@@ -2,5 +2,18 @@
 <resources>
 
     <string name="app_name">MusicPlayer2016</string>
+    <string name="app_id">837478446358536</string>
+    <string-array name="android_layout_arrays">
+        <item>Choose a Layout</item>
+        <item>LinearLayout</item>
+        <item>RelativeLayout</item>
+        <item>FrameLayout</item>
+        <item>TableLayout</item>
+        <item>AbsoluteLayout</item>
+        <item>GridLayout</item>
+    </string-array>
 
+    <string name="categoryId">Purchase</string>
+    <string name="actionId">Buy Tickets</string>
+    <string name="labelId">Buy Tickets Button Pressed!</string>
 </resources>

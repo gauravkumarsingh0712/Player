@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="8.5"
+        android:layout_weight="7"
         android:orientation="horizontal">
 
 
@@ -50,4 +50,31 @@
             custom:animDuration="3500"
             custom:foregroundColor="@color/Red" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/Spinner_image_view"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/icon" />
+
+
+        <!--<Spinner-->
+            <!--android:id="@+id/spinner"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:backgroundTint="#d11f08"-->
+            <!--android:entries="@array/android_layout_arrays"-->
+             />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -62,6 +62,8 @@ public class VideoViewActivity extends BaseActivity {
                 filename = filenameList.get(position);
                 Intent intent = new Intent(VideoViewActivity.this, VideoPlayerActivity.class);
                 intent.putExtra("videofilename", filename);
+                intent.putExtra("index",position);
+                intent.putStringArrayListExtra("songname", videoSongNameList);
                 startActivity(intent);
             }
         });

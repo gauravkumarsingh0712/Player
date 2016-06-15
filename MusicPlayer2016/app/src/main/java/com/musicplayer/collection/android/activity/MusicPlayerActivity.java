@@ -19,6 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.musicplayer.collection.android.R;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 import com.musicplayer.collection.android.service.MusicPlayerService;
@@ -58,6 +59,7 @@ public class MusicPlayerActivity extends BaseActivity implements SeekBar.OnSeekB
     private boolean isPlayingFirstTime = false;
     public MusicPlayerService musicPlayerService;
     private Intent playIntent;
+    private FirebaseAnalytics mFirebaseAnalytics;
     //binding
     private boolean musicBound = false;
 //    public static final String MEDIA_PATH = Environment
@@ -97,6 +99,8 @@ public class MusicPlayerActivity extends BaseActivity implements SeekBar.OnSeekB
             }
             // downloadedFile.createNewFile();
         }
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // Mediaplayer
         //  mp = new MediaPlayer();
 
@@ -140,6 +144,11 @@ public class MusicPlayerActivity extends BaseActivity implements SeekBar.OnSeekB
 
                         // Changing button image to pause button
                         btnPlay.setImageResource(R.drawable.btn_pause);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "123");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Blue Eyes");
+                        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                     }
                 }
 

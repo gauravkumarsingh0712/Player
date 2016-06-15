@@ -13,7 +13,7 @@ import com.musicplayer.collection.android.adapter.ArtistListViewAdapter;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 
 /**
- * Created by Ratan on 7/29/2015.
+ * Created by Gaurav on 7/29/2015.
  */
 public class ArtistListFragment extends Fragment {
 

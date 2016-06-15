@@ -3,6 +3,9 @@ package com.musicplayer.collection.android;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,13 +14,22 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.crashlytics.android.answers.Answers;
+import com.facebook.FacebookSdk;
+import com.google.android.gms.analytics.Tracker;
 import com.musicplayer.collection.android.activity.ChoosePlayerActivity;
+import com.musicplayer.collection.android.controller.AppController;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by gauravkumar.singh on 4/27/2016.
@@ -38,11 +50,14 @@ public class SplashActivity extends Activity {
     private ArrayList<String> yearArrayList = new ArrayList<>();
     private ProgressBar progressBar;
     private AsyncTask<Void, Void, Void> loadDataAsyncTask;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Answers());
 
+        AppController.getInstance();
         setContentView(R.layout.splash_activity);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -52,6 +67,13 @@ public class SplashActivity extends Activity {
         songsInfoDto = SongsInfoDto.getInstance();
 
         loadDataFromSDCard();
+
+        hashKey();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
+
     }
 
 
@@ -202,5 +224,23 @@ public class SplashActivity extends Activity {
 
         }
 
+    }
+
+    private void hashKey() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.musicplayer.collection.android",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                // Log.d("My key Hash : ", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                System.out.println("My key Hash : " + Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 }

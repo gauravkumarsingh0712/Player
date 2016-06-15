@@ -5,4 +5,5 @@ package com.musicplayer.collection.android.interfac;
  */
 public interface InformationInterface {
     public void getData(int index);
+
 }

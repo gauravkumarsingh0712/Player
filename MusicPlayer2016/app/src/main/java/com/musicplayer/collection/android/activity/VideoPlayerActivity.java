@@ -14,8 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.crashlytics.android.answers.LevelStartEvent;
 import com.musicplayer.collection.android.R;
 import com.musicplayer.collection.android.custom.CustomVideoView;
+import com.musicplayer.collection.android.utils.Utilities;
+
+import java.util.ArrayList;
 
 /**
  * Created by gauravkumar.singh on 4/27/2016.
@@ -29,7 +35,9 @@ public class VideoPlayerActivity extends BaseActivity {
     private int displayHeight = 0, displayWidth = 0;
     private LinearLayout videoViewSongInfoLayout;
     private FrameLayout videoViewLayout;
-
+    private Utilities utils;
+    private int index;
+    private ArrayList<String> songNameArrayList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +48,12 @@ public class VideoPlayerActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             videoFileName = bundle.getString("videofilename");
+            index = bundle.getInt("index");
+            songNameArrayList = bundle.getStringArrayList("songname");
+
+
         }
+        utils = new Utilities();
 
         mMetadataRetriever = new MediaMetadataRetriever();
 
@@ -144,6 +157,26 @@ public class VideoPlayerActivity extends BaseActivity {
         mVideoView.setMediaController(mController);
         mVideoView.requestFocus();
         mVideoView.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        onKeyMetric();
+    }
+
+    // TODO: Move this method and use your own event name to track your key metrics
+    public void onKeyMetric() {
+        // TODO: Use your own string attributes to track common values over time
+        // TODO: Use your own number attributes to track median value over time
+        String currentPostion = utils.milliSecondsToTimer(mVideoView.getCurrentPosition());
+        System.out.println("currentPostion : "+currentPostion);
+        Answers.getInstance().logCustom(new CustomEvent("Video Played")
+                .putCustomAttribute("Category", "Video Song")
+                .putCustomAttribute("Length", currentPostion)
+                .putCustomAttribute("Videoname", songNameArrayList.get(index)));
+        Answers.getInstance().logLevelStart(new LevelStartEvent());
     }
 
 }

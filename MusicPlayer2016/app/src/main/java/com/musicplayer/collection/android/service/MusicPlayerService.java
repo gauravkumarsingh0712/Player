@@ -74,8 +74,16 @@ public class MusicPlayerService extends Service implements
         // Play song
         try {
             player.reset();
-            player.setDataSource(songsList.get(index));
+            if(songsInfoDto.isStartPlayList())
+            {
+                player.setDataSource(songsInfoDto.getAddToPlayListArray().get(index));
+            }else
+            {
+                player.setDataSource(songsList.get(index));
+            }
             player.prepare();
+
+
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalStateException e) {

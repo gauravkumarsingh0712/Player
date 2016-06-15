@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "269045793027",
+    "firebase_url": "https://vaultapp-df80a.firebaseio.com",
+    "project_id": "vaultapp-df80a",
+    "storage_bucket": "vaultapp-df80a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269045793027:android:0d7c117aed48e021",
+        "android_client_info": {
+          "package_name": "com.musicplayer.collection.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269045793027-ffvrd5ubteq57u8ffqslr9o3ejgpdjf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4TNatSAfxfmwS4L-jwTk9vaQewvJd7Fg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

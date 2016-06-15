@@ -18,9 +18,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.musicplayer.collection.android.R;
-import com.musicplayer.collection.android.fragment.SongsListFragment;
 import com.musicplayer.collection.android.fragment.TabFragment;
 import com.musicplayer.collection.android.interfac.InformationInterface;
+import com.musicplayer.collection.android.interfac.SongIndexInterface;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 import com.musicplayer.collection.android.service.MusicPlayerService;
 import com.musicplayer.collection.android.utils.Utilities;
@@ -28,7 +28,7 @@ import com.musicplayer.collection.android.utils.Utilities;
 /**
  * Created by gauravkumar.singh on 5/2/2016.
  */
-public class MainActivity extends BaseActivity implements SongsListFragment.SongIndexInterface, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends BaseActivity implements SongIndexInterface, SeekBar.OnSeekBarChangeListener {
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     FragmentManager mFragmentManager;
@@ -267,6 +267,8 @@ public class MainActivity extends BaseActivity implements SongsListFragment.Song
         playSongFromList(index);
     }
 
+
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -303,7 +305,6 @@ public class MainActivity extends BaseActivity implements SongsListFragment.Song
 
         playSongFromList(MusicPlayerService.currentSongIndex);
 
-
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -311,9 +312,8 @@ public class MainActivity extends BaseActivity implements SongsListFragment.Song
         public void onReceive(Context context, Intent intent) {
 
             playSongFromList(MusicPlayerService.currentSongIndex);
-            informationInterface.getData(MusicPlayerService.currentSongIndex);       
+            informationInterface.getData(MusicPlayerService.currentSongIndex);
         }
     };
-
 
 }

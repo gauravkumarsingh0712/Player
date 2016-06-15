@@ -5,27 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.musicplayer.collection.android.R;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 
+import java.util.ArrayList;
+
 /**
- * Created by gauravkumar.singh on 5/2/2016.
+ * Created by gauravkumar.singh on 5/4/2016.
  */
-public class ArtistListViewAdapter extends BaseAdapter {
+public class DialogBoxAdapter extends BaseAdapter {
 
     LayoutInflater layoutInflater;
     public ViewHolder viewHolder;
     private Context context;
     private SongsInfoDto songsInfoDto;
+    private ArrayList<String> listNameArrayList = new ArrayList<>();
 
-    public ArtistListViewAdapter(Context context) {
+    public DialogBoxAdapter(Context context,ArrayList<String> arrayList) {
 
         this.context = context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        this.listNameArrayList = arrayList;
 
         songsInfoDto = SongsInfoDto.getInstance();
     }
@@ -34,7 +38,7 @@ public class ArtistListViewAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return songsInfoDto.getArtistNameArray().size();
+        return listNameArrayList.size();
     }
 
     @Override
@@ -54,22 +58,19 @@ public class ArtistListViewAdapter extends BaseAdapter {
 
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.song_list_adapter,
+            convertView = layoutInflater.inflate(R.layout.dialog_box_layout,
                     null);
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) convertView
-                    .findViewById(R.id.song_name_list);
-            viewHolder.imageView = (ImageView) convertView
-                    .findViewById(R.id.image_of_songs);
-            // viewHolder.equalizer = (EqualizerView) convertView.findViewById(R.id.equalizer_view);
+                    .findViewById(R.id.text_view);
+
             convertView.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         try {
-            viewHolder.textView.setText(songsInfoDto.getArtistNameArray().get(position));
-            viewHolder.imageView.setImageBitmap(songsInfoDto.getSongImageBitmapArray().get(position));
+            viewHolder.textView.setText(listNameArrayList.get(position));
 
             notifyDataSetChanged();
 
@@ -83,8 +84,7 @@ public class ArtistListViewAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         TextView textView;
-        ImageView imageView;
-        //EqualizerView equalizer;
 
     }
+
 }

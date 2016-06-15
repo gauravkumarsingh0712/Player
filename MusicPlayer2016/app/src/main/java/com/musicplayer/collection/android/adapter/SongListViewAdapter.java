@@ -1,6 +1,7 @@
 package com.musicplayer.collection.android.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.musicplayer.collection.android.R;
+import com.musicplayer.collection.android.activity.PlayListActivity;
 import com.musicplayer.collection.android.fragment.SongsListFragment;
+import com.musicplayer.collection.android.interfac.UpdateUIAdapterInterface;
+import com.musicplayer.collection.android.model.LocalModel;
 import com.musicplayer.collection.android.model.SongsInfoDto;
 
 import es.claucookie.miniequalizerlibrary.EqualizerView;
@@ -20,14 +24,17 @@ public class SongListViewAdapter extends BaseAdapter {
     public ViewHolder viewHolder;
     private Context context;
     private SongsInfoDto songsInfoDto;
-
-    public SongListViewAdapter(Context context) {
+    private int index;
+    public SongListViewAdapter(Context context,UpdateUIAdapterInterface updateUIAdapterInterface) {
 
         this.context = context;
         layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        LocalModel.getInstance().setUpdateUIAdapterInterface(updateUIAdapterInterface);
+
         songsInfoDto = SongsInfoDto.getInstance();
+
     }
 
 
@@ -50,8 +57,8 @@ public class SongListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.song_list_adapter,
@@ -62,12 +69,15 @@ public class SongListViewAdapter extends BaseAdapter {
             viewHolder.imageView = (ImageView) convertView
                     .findViewById(R.id.image_of_songs);
             viewHolder.equalizer = (EqualizerView) convertView.findViewById(R.id.equalizer_view);
+            viewHolder.spinnerImageView = (ImageView) convertView.findViewById(R.id.Spinner_image_view);
             convertView.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         try {
+            viewHolder.spinnerImageView.setTag(position);
             viewHolder.textView.setText(songsInfoDto.getSongNameArray().get(position));
             viewHolder.imageView.setImageBitmap(songsInfoDto.getSongImageBitmapArray().get(position));
 
@@ -83,6 +93,10 @@ public class SongListViewAdapter extends BaseAdapter {
                 viewHolder.textView.setSelected(false);
             }
 
+            System.out.println("position is : "+position);
+
+            initListener();
+
             notifyDataSetChanged();
 
         } catch (Exception e) {
@@ -97,7 +111,24 @@ public class SongListViewAdapter extends BaseAdapter {
         TextView textView;
         ImageView imageView;
         EqualizerView equalizer;
+        ImageView spinnerImageView;
 
+    }
+
+    private void initListener() {
+
+        viewHolder.spinnerImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = (Integer) v.getTag();
+
+                Intent in = new Intent(context,
+                        PlayListActivity.class);
+                in.putExtra("position", index);
+                in.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                context.startActivity(in);
+            }
+        });
     }
 
 }
